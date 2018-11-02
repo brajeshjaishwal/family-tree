@@ -1,72 +1,44 @@
 import axios from 'axios'
-import authActionConstants from '../constants/auth'
+import constants from '../constants/auth'
 
-export const registerUser = ({name, userType}) => {
+const { REGISTER, REGISTER_FAILED, REGISTER_SUCCEDED, LOGIN, LOGIN_SUCCEDED, LOGIN_FAILED } = constants
+
+export const registerUserAction = function ({name, password}) {
     const url = 'http://localhost:3300/register'
-    const request = axios.post(url, {name,userType})
+    const request = axios.post(url, {name, password})
     return async (dispatch) => {
         dispatch(registerStarted())
         try{
             let resp = await request
-            let data = await resp.data
-            localStorage.setItem('registered', name)
-            dispatch(registerSucceded(data))
+            let {user, token } = await resp.data
+            sessionStorage.setItem('name', user.name)
+            sessionStorage.setItem('token', token)
+            dispatch(registerSucceded(user))
         }catch(error) {
             dispatch(registerFailed(error))
         }
     }
-}
-export const registerStarted = () => {
-    return {
-        type: actionTypes.register,
-        payload: { loading: true }
-    }
-}
-export const registerSucceded = (user) => {
-    return {
-        type: actionTypes.register_success,
-        payload: { user, loading: false }
-    }
-}
-export const registerFailed = (error) => {
-    return {
-        type: actionTypes.register_failed,
-        payload: {loading: false, error: error}
-    }
+    function registerStarted() { return { type: REGISTER} }
+    function registerSucceded(user) { return { type: REGISTER_SUCCEDED, payload: { user, loading: false } } }
+    function registerFailed(error) { return { type: REGISTER_FAILED, payload: { error, loading: false}}}
 }
 
-export const loginUser = ({name, userType}) => {
+export const loginUserAction = ({name, password}) => {
     const url = 'http://localhost:3300/login'
-    const request = axios.post(url, {name,userType})
+    const request = axios.post(url, {name, password})
     return async (dispatch) => {
         dispatch(loginStarted())
         try{
             let resp = await request
-            let data = await resp.data
-            let user = data.user
-            localStorage.setItem('name', user.name)
-            localStorage.setItem('role', user.userType)
+            let {user, token } = await resp.data
+            sessionStorage.setItem('name', user.name)
+            sessionStorage.setItem('token', token)
             dispatch(loginSucceded(user))
         }catch(error) {
             dispatch(loginFailed(error))
         }
     }
-}
-export const loginStarted = () => {
-    return {
-        type: actionTypes.login,
-        payload: { loading: true }
-    }
-}
-export const loginSucceded = (user) => {
-    return {
-        type: actionTypes.login_success,
-        payload: { user, loading: false }
-    }
-}
-export const loginFailed = (error) => {
-    return {
-        type: actionTypes.login_failed,
-        payload: {loading: false, error: error}
-    }
+    function loginStarted() { return { type: LOGIN, payload: { loading: true } } }
+    function loginSucceded(user) { return { type: LOGIN_SUCCEDED, payload: { user, loading: false } } }
+    function loginFailed(error) { return { type: LOGIN_FAILED, payload: {loading: false, error: error} } }
 }

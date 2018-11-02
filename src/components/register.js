@@ -1,56 +1,58 @@
 import React, {Component} from 'react'
-import {Form, Button} from 'semantic-ui-react'
-import 'semantic-ui-css/semantic.min.css'
+import {Form, Button, Modal} from 'semantic-ui-react'
 import {bindActionCreators} from 'redux'
-import { registerUser } from '../actions/authActions';
 import { connect } from 'react-redux'
+import { registerUserAction } from '../actions/auth';
 
 class RegisterComponent extends Component {
     constructor(props){
         super(props)
         this.state = {
             name: '',
-            userType: 'student',
-            options: [
-                { key: 'student', text: 'student', value: 'student' },
-                { key: 'teacher', text: 'teacher', value: 'teacher' },]
+            password: '',
+            open: true,
         }
     }
 
-    onChangeHandler = ({name, value}) => {
-        this.setState({[name]: value})
+    onChangeHandler = (e) => {
+        this.setState({[e.target.name]: e.target.value})
     }
 
     onSubmitHandler = async (event) => {
         event.preventDefault()
         console.log(this.state.name)
-        if(!this.state.name || !this.state.userType)
+        if(!this.state.name || !this.state.password)
         {
             alert('please enter required values.')
+            return
         }
-        
-        await this.props.registerUser({name: this.state.name, userType: this.state.userType})
-        let registered = localStorage.getItem('registered')
-        if(registered)
+        this.setState({open: false})
+        await this.props.registerUser({name: this.state.name, password: this.state.password})
+        let token = sessionStorage.getItem('token')
+        if(token)
             this.props.history.push('/')
     }
 
     render() {
         return (
-            <div>
-                <Form className="ui form" onSubmit = {this.onSubmitHandler}>
-                    <Form.Input onChange={e => this.onChangeHandler({name:"name", value:e.target.value})} placeholder='Enter your name'/>
-                    <Form.Select options={this.state.options} defaultValue= 'student' onChange={e=>this.onChangeHandler({name:"userType", value:e.target.textContent})} />
-                    <Button>Register</Button>
-                </Form>
-            </div>
+            <Modal open={this.state.open} closeOnEscape={false} closeOnDimmerClick={false}>
+                <Modal.Header>Registration Information</Modal.Header>
+                <Modal.Content>
+                    <Form.Input fluid onChange={e => this.onChangeHandler} placeholder='Enter your name'/>
+                    <Form.Input type='password' fluid onChange={e => this.onChangeHandler} placeholder='Enter your password'/>
+                </Modal.Content>
+                <Modal.Actions>
+                    <Button onClick = {this.onSubmitHandler}>Login</Button>
+                    <Button onClick = {this.onSubmitHandler}>Register</Button>
+                </Modal.Actions>
+            </Modal>
         )
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        registerUser: bindActionCreators(registerUser, dispatch),
+        registerUser: bindActionCreators(registerUserAction, dispatch),
     }
 }
 
