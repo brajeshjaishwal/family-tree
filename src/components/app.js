@@ -11,13 +11,12 @@ import login from './login';
 class App extends Component {
   render() {
     let user = localStorage.getItem('name')
-    let isAuth = false
-    if(user) isAuth = true
+    let isAuth = user ? true : false
     return (
         <BrowserRouter>
           <Container>
             <header>My Family</header>
-            <Route exact path="/" component={login}/>
+            <Route exact path="/" component={familytree}/>
             <Route exact path="/Login" component={login}/>
             <Route exact path="/Register" component={register}/>
             <PrivateRoute path="/Family" isAuth={isAuth} component={familytree} />

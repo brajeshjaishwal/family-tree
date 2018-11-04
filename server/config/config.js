@@ -1,5 +1,5 @@
 let config = {
-    PORT : '3000',
+    PORT : '3300',
     SECRET: '35625&*^%%67$%hjh%^BrajeshJaishwal',
     DBURL: 'mongodb://brajesh:myfamily123@ds147073.mlab.com:47073/myfamily',
 }

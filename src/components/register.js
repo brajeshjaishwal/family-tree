@@ -38,8 +38,8 @@ class RegisterComponent extends Component {
             <Modal open={this.state.open} closeOnEscape={false} closeOnDimmerClick={false}>
                 <Modal.Header>Registration Information</Modal.Header>
                 <Modal.Content>
-                    <Form.Input fluid onChange={e => this.onChangeHandler} placeholder='Enter your name'/>
-                    <Form.Input type='password' fluid onChange={e => this.onChangeHandler} placeholder='Enter your password'/>
+                    <Form.Input name="name" fluid onChange={this.onChangeHandler} placeholder='Enter your name'/>
+                    <Form.Input name="password" type='password' fluid onChange={this.onChangeHandler} placeholder='Enter your password'/>
                 </Modal.Content>
                 <Modal.Actions>
                     <Button onClick = {this.onSubmitHandler}>Login</Button>

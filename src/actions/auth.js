@@ -1,17 +1,16 @@
-import axios from 'axios'
 import constants from '../constants/auth'
+import proxy from '../api/api'
 
 const { REGISTER, REGISTER_FAILED, REGISTER_SUCCEDED, LOGIN, LOGIN_SUCCEDED, LOGIN_FAILED } = constants
 
 export const registerUserAction = function ({name, password}) {
-    const url = 'http://localhost:3300/register'
-    const request = axios.post(url, {name, password})
+    const request = proxy.post('register', {name, password})
     return async (dispatch) => {
         dispatch(registerStarted())
         try{
             let resp = await request
             let {user, token } = await resp.data
-            sessionStorage.setItem('name', user.name)
+            sessionStorage.setItem('name', user)
             sessionStorage.setItem('token', token)
             dispatch(registerSucceded(user))
         }catch(error) {
@@ -24,14 +23,13 @@ export const registerUserAction = function ({name, password}) {
 }
 
 export const loginUserAction = ({name, password}) => {
-    const url = 'http://localhost:3300/login'
-    const request = axios.post(url, {name, password})
+    //const request = proxy.post('login', {name, password})
     return async (dispatch) => {
         dispatch(loginStarted())
         try{
-            let resp = await request
+            let resp = await proxy.post('login', {name, password})
             let {user, token } = await resp.data
-            sessionStorage.setItem('name', user.name)
+            sessionStorage.setItem('name', user)
             sessionStorage.setItem('token', token)
             dispatch(loginSucceded(user))
         }catch(error) {
@@ -40,5 +38,5 @@ export const loginUserAction = ({name, password}) => {
     }
     function loginStarted() { return { type: LOGIN, payload: { loading: true } } }
     function loginSucceded(user) { return { type: LOGIN_SUCCEDED, payload: { user, loading: false } } }
-    function loginFailed(error) { return { type: LOGIN_FAILED, payload: {loading: false, error: error} } }
+    function loginFailed(error) { return { type: LOGIN_FAILED, payload: {loading: false, error} } }
 }

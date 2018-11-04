@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {Form, Button, Modal} from 'semantic-ui-react'
 import {bindActionCreators} from 'redux'
 import { connect } from 'react-redux'
-import { loginUserAction } from '../actions/auth'
+import { loginUserAction, registerUserAction } from '../actions/auth'
 
 class LoginComponent extends Component {
     constructor(props){
@@ -19,19 +19,24 @@ class LoginComponent extends Component {
     }
 
     onSubmitHandler = async (event) => {
+        console.log(this.state)
         event.preventDefault()
-
-        console.log(this.state.name)
         if(!this.state.name || !this.state.password)
         {
             alert('please enter required values.')
             return
+        } 
+        if(event.target.name === 'login') {
+            await this.props.loginUser({name: this.state.name, password: this.state.password})
+        }else {
+            await this.props.registerUser({name: this.state.name, password: this.state.password})
         }
-        this.setState({open: false})        
-        await this.props.loginUser({name: this.state.name, password: this.state.password})
         let token = sessionStorage.getItem('token')
-        if(token)
+
+        if(token) {
+            this.setState({open: false})       
             this.props.history.push('/')
+        }
     }
 
     render() {
@@ -39,22 +44,31 @@ class LoginComponent extends Component {
             <Modal open={this.state.open} closeOnEscape={false} closeOnDimmerClick={false}>
                 <Modal.Header>Login Information</Modal.Header>
                 <Modal.Content>
-                    <Form.Input fluid onChange={e => this.onChangeHandler} placeholder='Enter your name'/>
-                    <Form.Input type='password' fluid onChange={e => this.onChangeHandler} placeholder='Enter your password'/>
+                    <Form.Input name="name" fluid onChange={this.onChangeHandler} placeholder='Enter your name'/>
+                    <Form.Input name="password" type='password' fluid onChange={this.onChangeHandler} placeholder='Enter your password'/>
+                    {this.props.error && <div>{this.props.message}</div>}
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button onClick = {this.onSubmitHandler}>Login</Button>
-                    <Button onClick = {this.onSubmitHandler}>Register</Button>
+                    <Button name='login' onClick = {this.onSubmitHandler}>Login</Button>
+                    <Button name='register' onClick = {this.onSubmitHandler}>Register</Button>
                 </Modal.Actions>
             </Modal>
         )
     }
 }
 
+function mapStateToProps(state) {
+    return {
+        error: state.auth.error !== "",
+        message: state.auth.error.message,
+        loading: state.auth.loading,
+    }
+}
 function mapDispatchToProps(dispatch) {
     return {
         loginUser: bindActionCreators(loginUserAction, dispatch),
+        registerUser: bindActionCreators(registerUserAction, dispatch),
     }
 }
 
-export default connect(null, mapDispatchToProps)(LoginComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(LoginComponent)

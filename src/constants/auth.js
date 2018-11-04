@@ -1,4 +1,4 @@
-const authActionConstants = {
+const constants = {
     LOGIN: "LOGIN",
     LOGIN_SUCCEDED: "LOGIN_SUCCEDED",
     LOGIN_FAILED: "LOGIN_FAILED",
@@ -8,4 +8,4 @@ const authActionConstants = {
     REGISTER_FAILED: "REGISTER_FAILED",
 }
 
-export default { ...authActionConstants }
+export default constants
