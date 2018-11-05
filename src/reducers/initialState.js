@@ -1,20 +1,13 @@
+import uuidv4 from 'uuid/v4'
+
 let initialState = {
-    node: {
-        name:'',
-        relation: '',
-        node: [
-            {
-                name:'Brajesh',
-                relation: 'father',
-                node: []
-            },
-            {
-                name: 'Shakun',
-                relation: 'mother',
-                node: []
-            }
-        ],
-    },
+    family: [{
+        key: uuidv4(),
+        name: '',
+        relation: 'Family Tree',
+        parent: 0,
+        family: []
+    }],
     token: '',
     loading: false,
     error: ''
