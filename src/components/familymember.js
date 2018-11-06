@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import FamilyMemberChildren from './familyMemberChildren'
 import MemberInfoDialog from './memberInfoDialog'
-import { Button, List, Segment } from 'semantic-ui-react'
+import { Button, List, Segment, Divider } from 'semantic-ui-react'
 import ReactTooltip from 'react-tooltip'
 import 'semantic-ui-css/semantic.min.css'
 
@@ -46,12 +46,13 @@ class FamilyMember extends Component {
     render() {
         return (
                 <List.Item >
+                    <Divider hidden></Divider>
                     <List.Content>
                             <Segment>
-                                <Button icon={ this.state.expanded ? 'minus' : 'plus'} 
+                                <Button icon={ this.state.expanded ? 'caret down' : 'caret right'} 
                                             floated='left' size='mini' circular onClick={this.handleExpand} />    
                                 <a data-tip data-for={`toolTip-${this.props.member.key}`} href='false'>{this.props.member.name}</a>
-                                <Button onClick={this.showDialog} circular size='mini' floated='right'>Add</Button>
+                                <Button icon='plus' onClick={this.showDialog} circular size='mini' floated='right' />
                             </Segment>
                             <ReactTooltip id={`toolTip-${this.props.member.key}`} border={true} effect='solid' type={'light'}>
                                 <div>
