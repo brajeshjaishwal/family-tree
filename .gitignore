@@ -11,6 +11,12 @@
 # production
 /build
 
+# .net bin
+bin
+
+# .net obj
+obj
+
 # misc
 .DS_Store
 .env.local
