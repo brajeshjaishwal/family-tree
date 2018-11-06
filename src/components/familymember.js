@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import FamilyMemberChildren from './familyMemberChildren'
 import MemberInfoDialog from './memberInfoDialog'
-import { Button, Grid, List, Card } from 'semantic-ui-react'
+import { Button, List, Label, Segment } from 'semantic-ui-react'
+import ReactTooltip from 'react-tooltip'
 import 'semantic-ui-css/semantic.min.css'
 
 class FamilyMember extends Component {
@@ -44,30 +45,25 @@ class FamilyMember extends Component {
 
     render() {
         return (
-                <List.Item>
-                    <Card onClick={this.showDialog}>
-                        <Card.Content>
-                            <Grid columns='3'>
-                                <Grid.Row>
-                                    <Grid.Column>
-                                        <Button icon={ this.state.expanded ? 'minus' : 'plus'} 
-                                                size='mini' 
-                                                circular 
-                                                onClick={this.handleExpand} />
-                                    </Grid.Column>
-                                    <Grid.Column >{this.props.member.name}</Grid.Column>
-                                    <Grid.Column>
-                                        <Button onClick={this.showDialog} 
-                                                circular size='mini'>Add</Button>
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                        </Card.Content>
-                    </Card>
+                <List.Item >
+                    <List.Content>
+                        <Segment>
+                            <Button icon={ this.state.expanded ? 'minus' : 'plus'} 
+                                        floated='left' size='mini' circular onClick={this.handleExpand} />
+                            <a data-tip data-for={`toolTip-${this.props.member.key}`} href>{this.props.member.name}</a>
+                            <Button onClick={this.showDialog} circular size='mini' floated='right'>Add</Button>
+                        </Segment>
+                        <ReactTooltip id={`toolTip-${this.props.member.key}`} border={true} effect='solid' type={'light'}>
+                            <div>
+                                <h3>{this.props.member.relation}</h3>
+                                <p>{this.props.member.name}</p>
+                            </div>
+                        </ReactTooltip>
+                    </List.Content>
                     <FamilyMemberChildren
                         expanded={this.state.expanded}
                         descendants={this.props.descendants}
-                        getDescendantsOfUUID={this.props.getDescendantsOfUUID}
+                        getDescendants={this.props.getDescendants}
                         onAdd={this.props.onAdd}
                     />
                     <MemberInfoDialog

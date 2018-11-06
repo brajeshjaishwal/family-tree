@@ -10,6 +10,10 @@ const constants = {
     EditMember: 'EditMember',
     EditMember_Success: 'EditMember_Success',
     EditMember_Failure: 'EditMember_Failure',
+
+    FetchFamily: 'FetchFamily',
+    FetchFamily_Success: 'FetchFamily_Success',
+    FetchFamily_Failure: 'FetchFamily_Failure',
 }
 
 export default { ...constants }

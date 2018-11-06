@@ -15,8 +15,8 @@ class FamilyMemberChildren extends Component {
                             key={member.key}
                             member={member}
                             parent={member.parent}
-                            getDescendantsOfUUID={this.props.getDescendantsOfUUID}
-                            descendants={this.props.getDescendantsOfUUID(member.key)}
+                            getDescendants={this.props.getDescendants}
+                            descendants={this.props.getDescendants(member.key)}
                             onAdd={this.props.onAdd}
                         />
                     )}

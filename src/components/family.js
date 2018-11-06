@@ -6,7 +6,6 @@ class FamilyContainer extends Component {
 
   constructor(props){
     super(props);
-      let user = localStorage.getItem('name')
       if( localStorage.getItem('family') != null ){
         //console.log("from storage",JSON.parse(localStorage.getItem('family')));
         this.state = {
@@ -16,9 +15,9 @@ class FamilyContainer extends Component {
         this.state = {
           family: [{
             key: uuidv4(),
-            name: `${user}'s Family`,
+            name: `My Family`,
             relation: "",
-            parent: 0
+            parent: 0,
           }]
         };
       }
@@ -27,6 +26,7 @@ class FamilyContainer extends Component {
   addFamilyMember = member => {
     //console.log("adding new family member: ", member);
     member.key = uuidv4();
+    //convert family object in array of elements
     var latest = this.state.family.slice();
     latest.push(member)
     this.setState({family:latest});
@@ -34,7 +34,7 @@ class FamilyContainer extends Component {
     console.log("added family member: ", member, " as child of key: ", member.parent);
   }
 
-  getDescendantsOfUUID = (key) => {
+  getDescendants = (key) => {
     if(this.state.family){
       var filtered = this.state.family.filter(function(member){
         console.log(member.parent, key);
@@ -51,15 +51,15 @@ class FamilyContainer extends Component {
 
     return (
           <div>
-            <div className="tree">
+            <div className="ui relaxed divided list">
               <ul>
-                {this.getDescendantsOfUUID(0).map(member=>{
-                  return <FamilyMember
+                {this.getDescendants(0).map(member=>{
+                        return <FamilyMember
                             key={member.key}
                             member={member}
-                            getDescendantsOfUUID={this.getDescendantsOfUUID}
+                            getDescendants={this.getDescendants}
                             onAdd={this.addFamilyMember}
-                            descendants={this.getDescendantsOfUUID(member.key)} />
+                            descendants={this.getDescendants(member.key)} />
                 })}
               </ul>
             </div>

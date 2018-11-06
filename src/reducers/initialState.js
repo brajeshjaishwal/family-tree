@@ -6,7 +6,6 @@ let initialState = {
         name: '',
         relation: 'Family Tree',
         parent: 0,
-        family: []
     }],
     token: '',
     loading: false,

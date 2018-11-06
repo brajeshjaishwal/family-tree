@@ -17,9 +17,9 @@ export const registerUserAction = function ({name, password}) {
             dispatch(registerFailed(error))
         }
     }
-    function registerStarted() { return { type: REGISTER} }
+    function registerStarted() { return { type: REGISTER } }
     function registerSucceded(user) { return { type: REGISTER_SUCCEDED, payload: { user, loading: false } } }
-    function registerFailed(error) { return { type: REGISTER_FAILED, payload: { error, loading: false}}}
+    function registerFailed(error) { return { type: REGISTER_FAILED, payload: { error, loading: false} } }
 }
 
 export const loginUserAction = ({name, password}) => {
