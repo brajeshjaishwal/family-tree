@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import FamilyMemberChildren from './familyMemberChildren'
 import MemberInfoDialog from './memberInfoDialog'
-import { Button, List, Label, Segment } from 'semantic-ui-react'
+import { Button, List, Segment } from 'semantic-ui-react'
 import ReactTooltip from 'react-tooltip'
 import 'semantic-ui-css/semantic.min.css'
 
@@ -47,18 +47,18 @@ class FamilyMember extends Component {
         return (
                 <List.Item >
                     <List.Content>
-                        <Segment>
-                            <Button icon={ this.state.expanded ? 'minus' : 'plus'} 
-                                        floated='left' size='mini' circular onClick={this.handleExpand} />
-                            <a data-tip data-for={`toolTip-${this.props.member.key}`} href>{this.props.member.name}</a>
-                            <Button onClick={this.showDialog} circular size='mini' floated='right'>Add</Button>
-                        </Segment>
-                        <ReactTooltip id={`toolTip-${this.props.member.key}`} border={true} effect='solid' type={'light'}>
-                            <div>
-                                <h3>{this.props.member.relation}</h3>
-                                <p>{this.props.member.name}</p>
-                            </div>
-                        </ReactTooltip>
+                            <Segment>
+                                <Button icon={ this.state.expanded ? 'minus' : 'plus'} 
+                                            floated='left' size='mini' circular onClick={this.handleExpand} />    
+                                <a data-tip data-for={`toolTip-${this.props.member.key}`} href='false'>{this.props.member.name}</a>
+                                <Button onClick={this.showDialog} circular size='mini' floated='right'>Add</Button>
+                            </Segment>
+                            <ReactTooltip id={`toolTip-${this.props.member.key}`} border={true} effect='solid' type={'light'}>
+                                <div>
+                                    <h3>{this.props.member.relation}</h3>
+                                    <p>{this.props.member.name}</p>
+                                </div>
+                            </ReactTooltip>
                     </List.Content>
                     <FamilyMemberChildren
                         expanded={this.state.expanded}
