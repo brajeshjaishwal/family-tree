@@ -3,9 +3,9 @@ import 'semantic-ui-css/semantic.min.css'
 import { BrowserRouter, Route } from 'react-router-dom'
 import { Container } from 'semantic-ui-react'
 import PrivateRoute from './privateroute'
-import FamilyContainer from './family';
-import register from './register';
-import login from './login';
+import FamilyContainer from '../family/family';
+import register from '../user/register';
+import login from '../user/login';
 
 
 class App extends Component {

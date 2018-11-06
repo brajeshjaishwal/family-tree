@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {Form, Button, Modal} from 'semantic-ui-react'
 import {bindActionCreators} from 'redux'
 import { connect } from 'react-redux'
-import { loginUserAction, registerUserAction } from '../actions/auth'
+import { loginUserAction, registerUserAction } from '../../actions/auth'
 
 class LoginComponent extends Component {
     constructor(props){
