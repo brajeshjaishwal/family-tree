@@ -7,8 +7,9 @@ const welcome =  (req, res) => {
 const register = async (req, res) => {
     try{
         let {name, password} = req.body
-        const result = await Register({name, password})
-        return res.send({user: name, token: result.token})
+        const {user, token} = await Register({name, password})
+        req.user = user
+        return res.send({user: user.name, token})
     }catch(Error){
         return res.send({user: null, message: 'some error occurred.'})
     }
@@ -17,8 +18,9 @@ const register = async (req, res) => {
 const login = async (req, res) => {
     try{
         let { name, password } = req.body
-        const result = await Login({name, password})
-        return res.send({user: name, token: result.token})
+        const {user, token} = await Login({name, password})
+        req.user = user
+        return res.send({user: user.name, token})
     }catch(Error)
     {
         return res.send({user: null, message: 'user does not exist.'})

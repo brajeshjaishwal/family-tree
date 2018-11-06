@@ -1,5 +1,6 @@
 const Mongoose = require('mongoose')
 const User = require('./models/user')
+const Family = require('./models/family')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const {SECRET, DBURL} = require('../config/config').config
@@ -33,7 +34,7 @@ const Register = async function({name, password}) {
         let salt = await bcrypt.genSalt(10)
         let hash = await bcrypt.hash(password, salt)
         const newUser = await new User({name, password: hash}).save();
-        return {token: createToken(newUser)}
+        return {user: newUser, token: createToken(newUser)}
     }catch(Error) {
         throw Error
     }
@@ -49,30 +50,29 @@ const Login = async function({name, password}) {
         if (!isValidPassword) {
             throw new Error('Invalid password')
         }
-        return { token: createToken(user) }
+        return { user, token: createToken(user) }
     }catch(Error) {
         throw Error
     }
 }
 
-const GetChildren = async function({id}) {
+const GetMembers = async function({user, parent}) {
     try{
-        const user = await User.findById({id})
-        if(user) {
-            //user exist so it can have relations
-            const children = await User.find({})
-        }
+        const members = await Family.find({user, parent})
+        return { members }
     }catch(Error) {
         throw Error
     }
 }
 
-const AddChildren = async function({id}) {
+const AddMember = async function({user, member}) {
     try{
-
+        const { parent, name, relation } = member
+        const temp = await new Family({ user, parent, name, relation }).save();
+        return { member: temp }
     }catch(Error) {
         throw Error
     }
 }
 
-module.exports = { Connect, Login, Register, GetChildren, AddChildren }
+module.exports = { Connect, Login, Register, GetMembers, AddMember }
