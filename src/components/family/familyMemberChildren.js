@@ -7,7 +7,7 @@ class FamilyMemberChildren extends Component {
         (
             this.props.descendants &&
             this.props.descendants.length>0 &&
-            this.props.expanded
+            this.props.expanded === 'expand'
         )?
             <ul>
                 {this.props.descendants.map(m=> <FamilyMember key={m.key} member={m} parent={m.parent} />)}

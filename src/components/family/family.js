@@ -3,14 +3,15 @@ import { connect } from 'react-redux'
 import FamilyMember from './familyMember'
 
 class FamilyContainer extends Component {
+
   render() {
-    console.log(this.props.root)
+    let roots = this.props.root.filter(m => m.parent === -1)
     return (
           <div>
             <div className="ui relaxed divided list">
               <ul>
                 {
-                  this.props.root.map(member => <FamilyMember key={member.key} member={member}/>)
+                  roots.map(member => <FamilyMember key={member.key} member={member}/>)
                 }
               </ul>
             </div>
@@ -20,7 +21,6 @@ class FamilyContainer extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log('family', state)
   return {
     root: state.family.family
   }

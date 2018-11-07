@@ -25,10 +25,10 @@ const familyReducer = (state= initialState, action) => {
         case globals.FetchFamily_Failure:
             return { ...state, ...action.payload}
         case globals.FetchFamily_Success:
-            let familyRoot = state.key === -1 ? [state.family[0]] : []
-            let oldFiltered = RemoveOldChildren(state.family, state.key)//state.family.filter(f => f.parent === state.key)
-            let tempfamily= [...familyRoot, ...oldFiltered, ...action.payload.members]
-            //let newFamily = [...tempfamily, ...action.payload.members]
+            let parentkey = state.key === -1 ? null : state.key
+            //let familyRoot = parentkey === null ? [state.family[0]] : []
+            let oldFiltered = RemoveOldChildren(state.family, parentkey)
+            let tempfamily= [ ...oldFiltered, ...action.payload.members]
             console.log(tempfamily)
             return { ...state, 
                         family: [...tempfamily], 

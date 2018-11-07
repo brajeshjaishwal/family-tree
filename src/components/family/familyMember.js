@@ -41,6 +41,8 @@ class FamilyMember extends Component {
     }
 
     render() {
+        let parentKey = this.props.member.key === -1 ? null : this.props.member.key
+        const children = this.props.family.filter(m => m.parent === parentKey)
         return (
                 <List.Item >
                     <Divider hidden></Divider>
@@ -52,7 +54,9 @@ class FamilyMember extends Component {
                                     loading = { this.props.loading }
                                     onClick={this.handleExpand} />    
                                 <a data-tip data-for={`toolTip-${this.props.member.key}`} href='false'>{this.props.member.name}</a>
-                                <Button icon='plus' onClick={this.showDialog} circular size='mini' floated='right' />
+                                <Button icon='plus' 
+                                        onClick={this.showDialog} 
+                                        circular size='mini' floated='right' />
                             </Segment>
                             <ReactTooltip id={`toolTip-${this.props.member.key}`} border={true} effect='solid' type={'light'}>
                                 <div>
@@ -61,7 +65,7 @@ class FamilyMember extends Component {
                                 </div>
                             </ReactTooltip>
                     </List.Content>
-                    <FamilyMemberChildren expanded={this.state.expanded} />
+                    <FamilyMemberChildren expanded={this.state.expanded} descendants={children}/>
                     <MemberInfoDialog
                         dialogVisible={this.state.dialogVisible}
                         showDialog={this.showDialog}
@@ -73,9 +77,14 @@ class FamilyMember extends Component {
     }
 }
 
+function mapStateToProps(state) {
+    return {
+        family: state.family.family
+    }
+}
 function mapDispatchToProps(dispatch) {
     return {
         fetchMembers: bindActionCreators(fetchFamilyMembersAction, dispatch)
     }
 }
-export default connect(null, mapDispatchToProps)(FamilyMember)
+export default connect(mapStateToProps, mapDispatchToProps)(FamilyMember)

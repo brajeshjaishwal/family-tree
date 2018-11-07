@@ -55,8 +55,7 @@ class LoginComponent extends Component {
                         onClick = {this.onSubmitHandler}
                         loading= { this.props.loading } >Login</Button>
                     <Button name='register' 
-                        onClick = {this.onSubmitHandler} 
-                        loading = {this.props.loading}>Register</Button>
+                        onClick = {this.onSubmitHandler}>Register</Button>
                 </Modal.Actions>
             </Modal>
         )
