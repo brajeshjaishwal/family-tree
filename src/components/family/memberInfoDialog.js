@@ -21,17 +21,17 @@ class MemberInfoDialog extends Component {
 
     close = () => {
         this.props.hideDialog();
+        this.setState({name: '',relation: ''})
     }
 
     saveAndClose = () => {
         let { name, relation, parent } = this.state
         this.props.addMember({name, relation, parent})
+        this.props.hideDialog()
+        this.setState({name: '', relation: ''})
     }
 
     render() {
-        if(this.props.success) {
-            this.props.hideDialog()
-        }
         return (
             <Modal open={this.props.dialogVisible}>
                 <Modal.Header>
@@ -58,7 +58,7 @@ class MemberInfoDialog extends Component {
                 </Modal.Content>
                 <Modal.Actions>
                     <Button type="submit" primary onClick={this.saveAndClose} loading={this.props.loading}>Save And Close</Button>
-                    <Button onClick={this.close}>Close</Button>
+                    <Button onClick={this.close} secondary>Close</Button>
                 </Modal.Actions>
             </Modal>
         );

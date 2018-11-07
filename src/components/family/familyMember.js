@@ -79,7 +79,8 @@ class FamilyMember extends Component {
 
 function mapStateToProps(state) {
     return {
-        family: state.family.family
+        family: state.family.family,
+        loading: state.family.loading
     }
 }
 function mapDispatchToProps(dispatch) {

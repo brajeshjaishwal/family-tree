@@ -21,7 +21,7 @@ export const addFamilyMemberAction = function ({name, relation, parent}) {
             dispatch(addFamilyMemberFailed(error))
         }
     }
-    function addFamilyMemberStarted() { return { type: AddMember, error: '', success: false } }
+    function addFamilyMemberStarted() { return { type: AddMember, payload: {error: '', success: false, loading: true} } }
     function addFamilyMemberSucceded(member) { return { type: AddMember_Success, payload: { member, loading: false, success: true } } }
     function addFamilyMemberFailed(error) { return { type: AddMember_Failure, payload: { error, loading: false} }}
 }
@@ -47,7 +47,7 @@ export const fetchFamilyMembersAction = function (parent) {
             dispatch(fetchFamilyMembersFailed(error))
         }
     }
-    function fetchFamilyMembersStarted(key) { return { type: FetchFamily, payload: { key } } }
+    function fetchFamilyMembersStarted(key) { return { type: FetchFamily, payload: { key, loading: true, error: '' } } }
     function fetchFamilyMembersSucceded(members) { return { type: FetchFamily_Success, payload: { members, loading: false } } }
     function fetchFamilyMembersFailed(error) { return { type: FetchFamily_Failure, payload: { error, loading: false}}}
 }

@@ -43,7 +43,7 @@ class LoginComponent extends Component {
     render() {
         return (
             <Modal open={this.state.open} closeOnEscape={false} closeOnDimmerClick={false}>
-                <Modal.Header>Login Information</Modal.Header>
+                <Modal.Header>User Information</Modal.Header>
                 <Modal.Content>
                     <Form.Input name="name" fluid onChange={this.onChangeHandler} placeholder='Enter your name'/>
                     <Form.Input name="password" type='password' fluid onChange={this.onChangeHandler} placeholder='Enter your password'/>
@@ -51,10 +51,10 @@ class LoginComponent extends Component {
                     {this.props.registered && <div>Your are registered now, please login.</div>}
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button name='login' 
+                    <Button name='login' primary
                         onClick = {this.onSubmitHandler}
                         loading= { this.props.loading } >Login</Button>
-                    <Button name='register' 
+                    <Button name='register' secondary
                         onClick = {this.onSubmitHandler}>Register</Button>
                 </Modal.Actions>
             </Modal>
