@@ -11,6 +11,7 @@ class LoginComponent extends Component {
             name: '',
             password: '',
             open: true,
+            registered: false,
         }
     }
 
@@ -32,10 +33,10 @@ class LoginComponent extends Component {
             await this.props.registerUser({name: this.state.name, password: this.state.password})
         }
         let token = sessionStorage.getItem('token')
-
-        if(token) {
+        console.log(token)
+        if(token && token !== null && token !== undefined && token !== 'undefined') {
             this.setState({open: false})       
-            this.props.history.push('/')
+            this.props.history.push('/Family')
         }
     }
 
@@ -46,11 +47,16 @@ class LoginComponent extends Component {
                 <Modal.Content>
                     <Form.Input name="name" fluid onChange={this.onChangeHandler} placeholder='Enter your name'/>
                     <Form.Input name="password" type='password' fluid onChange={this.onChangeHandler} placeholder='Enter your password'/>
-                    {this.props.error && <div>{this.props.message}</div>}
+                    {this.props.error && <div>{this.props.errMessage + this.props.message}</div>}
+                    {this.props.registered && <div>Your are registered now, please login.</div>}
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button name='login' onClick = {this.onSubmitHandler}>Login</Button>
-                    <Button name='register' onClick = {this.onSubmitHandler}>Register</Button>
+                    <Button name='login' 
+                        onClick = {this.onSubmitHandler}
+                        loading= { this.props.loading } >Login</Button>
+                    <Button name='register' 
+                        onClick = {this.onSubmitHandler} 
+                        loading = {this.props.loading}>Register</Button>
                 </Modal.Actions>
             </Modal>
         )
@@ -61,7 +67,9 @@ function mapStateToProps(state) {
     return {
         error: state.auth.error !== "",
         message: state.auth.error.message,
+        errMessage: state.auth.error,
         loading: state.auth.loading,
+        registered: state.auth.registered,
     }
 }
 function mapDispatchToProps(dispatch) {

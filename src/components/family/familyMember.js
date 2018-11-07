@@ -1,23 +1,28 @@
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
 import FamilyMemberChildren from './familyMemberChildren'
 import MemberInfoDialog from './memberInfoDialog'
 import { Button, List, Segment, Divider } from 'semantic-ui-react'
 import ReactTooltip from 'react-tooltip'
 import 'semantic-ui-css/semantic.min.css'
+import { bindActionCreators } from 'redux';
+import { fetchFamilyMembersAction } from '../../actions/family';
 
+const expandState = { expand: 'expand', collapse: 'collapse'}
 class FamilyMember extends Component {
-
     constructor(props){
         super(props);
         this.state = {
             dialogVisible: false,
-            expanded: false,
+            expanded: expandState.collapse,
+            key: this.props.member.key
         }
     }
 
     showDialog = (e) =>{
         e.preventDefault();
         e.stopPropagation();
+        this.setState({expanded: expandState.collapse})
         this.setState({dialogVisible: true});
     }
 
@@ -28,19 +33,11 @@ class FamilyMember extends Component {
     handleExpand = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        this.setState({expanded: !this.state.expanded})
-    }
-
-    addDescendant = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        console.log("adding new descendant for key: ",this.props.member.key)
-        const member = {
-            name: "temp",
-            relation: "temp relation",
-            parent: this.props.member.key
+        let expanded = this.state.expanded === expandState.collapse ? expandState.expand : expandState.collapse
+        this.setState({expanded})
+        if(expanded === expandState.expand) {
+            this.props.fetchMembers(this.state.key)
         }
-        this.props.onAdd(member);
     }
 
     render() {
@@ -49,8 +46,11 @@ class FamilyMember extends Component {
                     <Divider hidden></Divider>
                     <List.Content>
                             <Segment>
-                                <Button icon={ this.state.expanded ? 'caret down' : 'caret right'} 
-                                            floated='left' size='mini' circular onClick={this.handleExpand} />    
+                                <Button 
+                                    icon = { this.state.expanded === expandState.expand ? 'caret down' : 'caret right'} 
+                                    floated='left' size='mini' circular 
+                                    loading = { this.props.loading }
+                                    onClick={this.handleExpand} />    
                                 <a data-tip data-for={`toolTip-${this.props.member.key}`} href='false'>{this.props.member.name}</a>
                                 <Button icon='plus' onClick={this.showDialog} circular size='mini' floated='right' />
                             </Segment>
@@ -61,15 +61,9 @@ class FamilyMember extends Component {
                                 </div>
                             </ReactTooltip>
                     </List.Content>
-                    <FamilyMemberChildren
-                        expanded={this.state.expanded}
-                        descendants={this.props.descendants}
-                        getDescendants={this.props.getDescendants}
-                        onAdd={this.props.onAdd}
-                    />
+                    <FamilyMemberChildren expanded={this.state.expanded} />
                     <MemberInfoDialog
                         dialogVisible={this.state.dialogVisible}
-                        onAdd={this.props.onAdd}
                         showDialog={this.showDialog}
                         hideDialog={this.hideDialog}
                         member={this.props.member}
@@ -79,4 +73,9 @@ class FamilyMember extends Component {
     }
 }
 
-export default FamilyMember
+function mapDispatchToProps(dispatch) {
+    return {
+        fetchMembers: bindActionCreators(fetchFamilyMembersAction, dispatch)
+    }
+}
+export default connect(null, mapDispatchToProps)(FamilyMember)

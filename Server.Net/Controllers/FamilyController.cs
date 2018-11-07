@@ -36,6 +36,8 @@ namespace WebApi.Controllers
         public IActionResult AddMember([FromBody]Member memberParam)
         {
             try{
+                var claimsIdentity = (ClaimsIdentity)HttpContext.User.Identity;
+                var userId = int.Parse(claimsIdentity.Name);
                 var member = _familyService.AddMember(memberParam);
                 return Ok(member);
             }
@@ -44,7 +46,7 @@ namespace WebApi.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("{parentid}")]
         public IActionResult GetMembers(int parentid)
         {
             var members = _familyService.GetMembers(parentid);

@@ -58,11 +58,12 @@ namespace Server.Net
                     {
                         var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
                         var userId = int.Parse(context.Principal.Identity.Name);
+                        Console.WriteLine(userId);
                         var user = userService.GetById(userId);
                         if (user == null)
                         {
                             // return unauthorized if user no longer exists
-                            context.Fail("Unauthorized");
+                            context.Fail("User is not authorized to perform this operation.");
                         }
                         return Task.CompletedTask;
                     }
@@ -80,6 +81,7 @@ namespace Server.Net
  
             // configure DI for application services
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IFamilyService, FamilyService>();
         }
  
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

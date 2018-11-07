@@ -9,29 +9,34 @@ export const registerUserAction = function ({name, password}) {
         dispatch(registerStarted())
         try{
             let resp = await request
-            let {user, token } = await resp.data
-            sessionStorage.setItem('name', user)
-            sessionStorage.setItem('token', token)
-            dispatch(registerSucceded(user))
+            let {message} = await resp.data
+            if(message !== undefined) {
+                dispatch(registerFailed(message))
+            }else 
+                dispatch(registerSucceded())
         }catch(error) {
             dispatch(registerFailed(error))
         }
     }
     function registerStarted() { return { type: REGISTER } }
-    function registerSucceded(user) { return { type: REGISTER_SUCCEDED, payload: { user, loading: false } } }
+    function registerSucceded() { return { type: REGISTER_SUCCEDED, payload: { registered: true, loading: false } } }
     function registerFailed(error) { return { type: REGISTER_FAILED, payload: { error, loading: false} } }
 }
 
 export const loginUserAction = ({name, password}) => {
-    //const request = proxy.post('login', {name, password})
     return async (dispatch) => {
         dispatch(loginStarted())
         try{
             let resp = await proxy.post('login', {name, password})
-            let {user, token } = await resp.data
-            sessionStorage.setItem('name', user)
-            sessionStorage.setItem('token', token)
-            dispatch(loginSucceded(user))
+            let {user, token, message } = await resp.data
+            if(user && user !== '' && user !== undefined)
+                sessionStorage.setItem('name', user)
+            if(token && token !== '' && token !== undefined )
+                sessionStorage.setItem('token', token)
+            if(user === null || user === undefined || token === undefined) {
+                dispatch(loginFailed(message))
+            }else 
+                dispatch(loginSucceded(user))
         }catch(error) {
             dispatch(loginFailed(error))
         }

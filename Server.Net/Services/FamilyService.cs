@@ -46,7 +46,7 @@ namespace Server.Net.Services
         }
         public Member Update(Member memberParam)
         {
-            var member = _context.Members.Find(memberParam.key);
+            var member = _context.Members.Find(memberParam.Id);
 
             if (member == null)
                 throw new AppException("Member not found");

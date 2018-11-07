@@ -10,16 +10,13 @@ import login from '../user/login';
 
 class App extends Component {
   render() {
-    localStorage.setItem('name', 'brajesh')
-    let user = localStorage.getItem('name')
-    let isAuth = user ? true : false
     return (
         <BrowserRouter>
           <Container>
-            <Route exact path="/" component={FamilyContainer}/>
+            <Route exact path="/" component={login}/>
             <Route exact path="/Login" component={login}/>
             <Route exact path="/Register" component={register}/>
-            <PrivateRoute path="/Family" isAuth={isAuth} component={FamilyContainer} />
+            <PrivateRoute path="/Family" component={FamilyContainer} />
           </Container>
         </BrowserRouter>
     );

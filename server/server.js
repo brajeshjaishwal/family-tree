@@ -12,7 +12,7 @@ require('./db/index').Connect()
 
 var corsOptions = {
     origin: 'http://localhost:3000',
-    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+    optionsSuccessStatus: 200
   }
 
 app.use(cors(corsOptions))
@@ -23,14 +23,16 @@ app.use(bodyParser.urlencoded({extended: false}))
 
 app.use(morgon("dev"))
 
+app.use((req, res, next) => auth.authenticate(req, res, next))
+
 app.get('/welcome', (req, res) => auth.welcome(req, res))
 
 app.post('/register', (req, res) => auth.register(req, res))
 
 app.post('/login', async (req, res) => auth.login(req, res))
 
-app.post('/add', async(req, res) => family.addMember(req, res))
+app.post('/AddMember', async(req, res) => family.addMember(req, res))
 
-app.get('/get', async(req, res) => family.getMembers(req, res))
+app.get('/GetMembers/:parentid', async(req, res) => family.getMembers(req, res))
 
 app.listen(PORT, () => console.log(`server is running on ${PORT}`))

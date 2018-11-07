@@ -1,15 +1,17 @@
 import React, {Component} from 'react'
+import { connect } from 'react-redux'
 import { Form, Button, Modal, Header } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css'
+import { bindActionCreators } from 'redux';
+import { addFamilyMemberAction } from '../../actions/family';
 
 class MemberInfoDialog extends Component {
 
     constructor(props){
         super(props);
         this.state = {
-            key: this.props.member.key,
-            name: this.props.member.name,
-            relation: this.props.member.relation,
+            name: '',
+            relation: '',
             parent: this.props.member.key,
         };
     }
@@ -22,12 +24,14 @@ class MemberInfoDialog extends Component {
     }
 
     saveAndClose = () => {
-        let {key, name, relation, parent} = this.state
-        this.props.onAdd({key, name, relation, parent})
-        this.props.hideDialog();
+        let { name, relation, parent } = this.state
+        this.props.addMember({name, relation, parent})
     }
 
     render() {
+        if(this.props.success) {
+            this.props.hideDialog()
+        }
         return (
             <Modal open={this.props.dialogVisible}>
                 <Modal.Header>
@@ -50,9 +54,10 @@ class MemberInfoDialog extends Component {
                             onChange={this.handleChange}
                         />
                     </Form>
+                {this.props.error && <div>{this.props.message}</div>}
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button type="submit" primary onClick={this.saveAndClose}>Save And Close</Button>
+                    <Button type="submit" primary onClick={this.saveAndClose} loading={this.props.loading}>Save And Close</Button>
                     <Button onClick={this.close}>Close</Button>
                 </Modal.Actions>
             </Modal>
@@ -60,4 +65,19 @@ class MemberInfoDialog extends Component {
     }
 }
 
-export default MemberInfoDialog
+function mapStateToProps(state) {
+    console.log('memberInfoDialog, mapStateToProps', state)
+    return {
+        loading: state.family.loading,
+        error: state.family.error !== "",
+        message: state.family.error,
+        success: state.family.success,
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        addMember: bindActionCreators(addFamilyMemberAction, dispatch)
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(MemberInfoDialog)

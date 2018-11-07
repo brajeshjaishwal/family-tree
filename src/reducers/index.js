@@ -1,10 +1,10 @@
 import authReducer from './authReducer'
-import treeReducer from './treeReducer'
+import familyReducer from './familyReducer'
 import { combineReducers } from 'redux';
 
 const rootReducer = combineReducers({
     auth: authReducer,
-    tree: treeReducer,
+    family: familyReducer,
 })
 
 export default rootReducer

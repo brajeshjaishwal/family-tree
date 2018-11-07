@@ -10,16 +10,7 @@ class FamilyMemberChildren extends Component {
             this.props.expanded
         )?
             <ul>
-                    {this.props.descendants.map(member=>
-                        <FamilyMember
-                            key={member.key}
-                            member={member}
-                            parent={member.parent}
-                            getDescendants={this.props.getDescendants}
-                            descendants={this.props.getDescendants(member.key)}
-                            onAdd={this.props.onAdd}
-                        />
-                    )}
+                {this.props.descendants.map(m=> <FamilyMember key={m.key} member={m} parent={m.parent} />)}
             </ul> :
             null
         );
