@@ -13,13 +13,16 @@ Install nodejs by following below url:
 install dotnetcore 2.1 by follow below url:
 "https://www.microsoft.com/net/download/dotnet-core/2.1"
 
+Install yarn package manager
+"https://yarnpkg.com/lang/en/docs/install/#windows-stable"
+
 Clone repository using the below command line:
 git clone "https://github.com/brajeshjaishwal/family-tree.git"
 
 go to the directory
 
 Install dependencies, follow below steps
-1) yarn install
+1) npm install or yarn install
 2) dotnet restore
 
 Run server
@@ -31,5 +34,4 @@ Run client
 Now head over to "http://localhost:3000"
 1) it will ask to register
 2) then login
-3) now you are able to create family tree, save it and reload it
-    
+3) now you should be able to create family tree, save it and reload it
