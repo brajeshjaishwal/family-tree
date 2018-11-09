@@ -29,7 +29,7 @@ Run server
 1) in one terminal or command prompt run "yarn server" command
 
 Run client
-1) in other terminal or command prompt run "yarn client" command
+1) in other terminal or command prompt run "yarn client" or "yarn start" command
 
 Now head over to "http://localhost:3000"
 1) it will ask to register
