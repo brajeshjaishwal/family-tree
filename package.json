@@ -27,7 +27,7 @@
     "nodemon": "^1.18.5"
   },
   "scripts": {
-    "client": "nodemon client/index.js",
+    "client": "node client/index.js",
     "server": "node server/server.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
