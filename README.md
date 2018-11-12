@@ -20,6 +20,7 @@ Clone repository using the below command line:
 git clone "https://github.com/brajeshjaishwal/family-tree.git"
 
 go to the directory
+cd family-tree
 
 Install dependencies, follow below steps
 1) npm install or yarn install
@@ -30,6 +31,7 @@ Run server (nodejs)
                             Or
 
 Run server (dotnet)
+0) cd Server.Net
 1) dotnet restore
 #2) dotnet ef migrations add InitialCreate (checkin have database attached)
 #3) dotnet ef database update (checkin have database attached)
