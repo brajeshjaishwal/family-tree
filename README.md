@@ -7,10 +7,10 @@ to run the application
 
 we must have these installed on your machine
 
-Install nodejs by following below url:
+Install nodejs by following url:
 "https://nodejs.org/en/download/"
 
-install dotnetcore 2.1 by follow below url:
+install dotnetcore 2.1 by following url:
 "https://www.microsoft.com/net/download/dotnet-core/2.1"
 
 Install yarn package manager
