@@ -31,11 +31,9 @@ Run server (nodejs)
                             Or
 
 Run server (dotnet)
-0) cd Server.Net
-1) dotnet restore
-#2) dotnet ef migrations add InitialCreate (checkin have database attached)
-#3) dotnet ef database update (checkin have database attached)
-4) in a terminal or command prompt run "dotnet run" command
+1) cd Server.Net
+2) dotnet restore
+3) in a terminal or command prompt run "dotnet run" command
 
 Run client
 1) in a terminal or command prompt run "yarn start" command
