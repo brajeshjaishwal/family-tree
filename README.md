@@ -1,6 +1,6 @@
 Web application to provision create and view a family tree.
 a) server 1: node.js, mongodb, mongoose.
-b) server 2: dotnetcore, entity framework, inmemory database (it needs some finishing touch)
+b) server 2: dotnetcore, entity framework, inmemory & sqlite database (it needs some finishing touch)
 b) client: semantic-ui, react, redux, axios.
 
 to run the application
