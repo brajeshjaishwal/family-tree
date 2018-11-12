@@ -31,9 +31,10 @@ Run server (nodejs)
                             Or
 
 Run server (dotnet)
-1) cd Server.Net
-2) dotnet restore
-3) in a terminal or command prompt run "dotnet run" command
+1) open a terminal or command prompt
+2) cd Server.Net
+3) dotnet restore
+4) dotnet run
 
 Run client
 1) in a terminal or command prompt run "yarn start" command
