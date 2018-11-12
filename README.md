@@ -23,15 +23,22 @@ go to the directory
 
 Install dependencies, follow below steps
 1) npm install or yarn install
-2) dotnet restore
 
-Run server
-1) in one terminal or command prompt run "yarn server" command
+Run server (nodejs)
+1) in a terminal or command prompt run "yarn server" command
+
+                            Or
+
+Run server (dotnet)
+1) dotnet restore
+#2) dotnet ef migrations add InitialCreate (checkin have database attached)
+#3) dotnet ef database update (checkin have database attached)
+4) in a terminal or command prompt run "dotnet run" command
 
 Run client
-1) in other terminal or command prompt run "yarn client" command
+1) in a terminal or command prompt run "yarn start" command
 
 Now head over to "http://localhost:3000"
-1) it will ask to register
-2) then login
+1) register a user (or use brij/brij to login)
+2) after register please login
 3) now you should be able to create family tree, save it and reload it
