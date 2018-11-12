@@ -31,27 +31,30 @@ namespace WebApi.Controllers
             _appSettings = appSettings.Value;
         }
 
-        [AllowAnonymous]
         [HttpPost("AddMember")]
         public IActionResult AddMember([FromBody]Member memberParam)
         {
             try{
                 var claimsIdentity = (ClaimsIdentity)HttpContext.User.Identity;
                 var userId = int.Parse(claimsIdentity.Name);
+                memberParam.user = userId;
                 var member = _familyService.AddMember(memberParam);
-                return Ok(member);
+                return Ok(new { member });
             }
             catch(AppException ex) {
                 return BadRequest(new { message = ex.Message });
             }
         }
 
-        [HttpGet("{parentid}")]
+        [HttpGet("GetMembers/{parentid}")]
         public IActionResult GetMembers(int parentid)
         {
-            var members = _familyService.GetMembers(parentid);
-            return Ok(members);
+            var claimsIdentity = (ClaimsIdentity)HttpContext.User.Identity;
+            var userId = int.Parse(claimsIdentity.Name);
+            var members = _familyService.GetMembers(parentid, userId);
+            return Ok(new { members });
         }
+
         [HttpPut("{id}")]
         public IActionResult Update([FromBody]Member memberParam)
         {

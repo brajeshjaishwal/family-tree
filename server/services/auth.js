@@ -10,7 +10,7 @@ const register = async (req, res) => {
         await Register({name, password})
         return res.send()
     }catch(Error){
-        return res.send({user: null, message: 'some error occurred.'})
+        return res.send({user: null, message: Error.message || 'some server error occurred'})
     }
 }
 
@@ -22,7 +22,7 @@ const login = async (req, res) => {
         return res.send({user: user.name, token})
     }catch(Error)
     {
-        return res.send({user: null, message: 'user does not exist.'})
+        return res.send({user: null, message: Error.message || 'user does not exist.'})
     }
 }
 

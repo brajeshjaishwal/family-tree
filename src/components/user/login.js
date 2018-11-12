@@ -12,6 +12,8 @@ class LoginComponent extends Component {
             password: '',
             open: true,
             registered: false,
+            login: false,
+            register: false,
         }
     }
 
@@ -27,12 +29,15 @@ class LoginComponent extends Component {
             alert('please enter required values.')
             return
         } 
+        let elementName = event.target.name;
+        this.setState({[elementName]: true})
         if(event.target.name === 'login') {
             await this.props.loginUser({name: this.state.name, password: this.state.password})
         }else {
             await this.props.registerUser({name: this.state.name, password: this.state.password})
         }
         let token = sessionStorage.getItem('token')
+        this.setState({[elementName]: false})
         console.log(token)
         if(token && token !== null && token !== undefined && token !== 'undefined') {
             this.setState({open: false})       
@@ -41,21 +46,27 @@ class LoginComponent extends Component {
     }
 
     render() {
+        let registered = this.props.registered || false
+
         return (
             <Modal open={this.state.open} closeOnEscape={false} closeOnDimmerClick={false}>
                 <Modal.Header>User Information</Modal.Header>
                 <Modal.Content>
-                    <Form.Input name="name" fluid onChange={this.onChangeHandler} placeholder='Enter your name'/>
-                    <Form.Input name="password" type='password' fluid onChange={this.onChangeHandler} placeholder='Enter your password'/>
-                    {this.props.error && <div>{this.props.errMessage + this.props.message}</div>}
-                    {this.props.registered && <div>Your are registered now, please login.</div>}
+                    <Form.Input name="name" fluid placeholder='Enter your name'
+                        onChange={this.onChangeHandler}/>
+                    <Form.Input name="password" type='password' fluid placeholder='Enter your password'
+                        style={{marginTop: '0.5em'}}
+                        onChange={this.onChangeHandler} />
+                    { this.props.error && <span style={{color:'red'}}>{this.props.error}</span>}
+                    { registered && <span style={{color:'green'}}>Now you are registered, please login to proceed.</span>}
                 </Modal.Content>
                 <Modal.Actions>
                     <Button name='login' primary
                         onClick = {this.onSubmitHandler}
-                        loading= { this.props.loading } >Login</Button>
+                        loading= { this.props.loading && this.state.login} >Login</Button>
                     <Button name='register' secondary
-                        onClick = {this.onSubmitHandler}>Register</Button>
+                        onClick = {this.onSubmitHandler}
+                        loading= { this.props.loading && this.state.register } >Register</Button>
                 </Modal.Actions>
             </Modal>
         )
@@ -64,9 +75,7 @@ class LoginComponent extends Component {
 
 function mapStateToProps(state) {
     return {
-        error: state.auth.error !== "",
-        message: state.auth.error.message,
-        errMessage: state.auth.error,
+        error: state.auth.error,
         loading: state.auth.loading,
         registered: state.auth.registered,
     }

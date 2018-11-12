@@ -5,7 +5,7 @@ import FamilyMember from './familyMember'
 class FamilyContainer extends Component {
 
   render() {
-    let roots = this.props.root.filter(m => m.parent === -1)
+    let roots = this.props.root.filter(m => m.relation === 'Root')
     return (
           <div>
             <div className="ui relaxed divided list">

@@ -15,7 +15,7 @@ class FamilyMember extends Component {
         this.state = {
             dialogVisible: false,
             expanded: expandState.collapse,
-            key: this.props.member.key
+            key: this.props.member.key,
         }
     }
 
@@ -41,8 +41,8 @@ class FamilyMember extends Component {
     }
 
     render() {
-        let parentKey = this.props.member.key === -1 ? null : this.props.member.key
-        const children = this.props.family.filter(m => m.parent === parentKey)
+        let children = this.props.family.filter(m => m.parent === this.props.member.key)
+
         return (
                 <List.Item >
                     <Divider hidden></Divider>
@@ -51,7 +51,7 @@ class FamilyMember extends Component {
                                 <Button 
                                     icon = { this.state.expanded === expandState.expand ? 'caret down' : 'caret right'} 
                                     floated='left' size='mini' circular 
-                                    loading = { this.props.loading }
+                                    loading = { this.props.loading === this.props.member.key }
                                     onClick={this.handleExpand} />    
                                 <a data-tip data-for={`toolTip-${this.props.member.key}`} href='false'>{this.props.member.name}</a>
                                 <Button icon='plus' 

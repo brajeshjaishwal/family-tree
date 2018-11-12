@@ -35,6 +35,12 @@ namespace WebApi.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet("Welcome")]
+        public IActionResult Welcome(){
+            return Ok(new { message = "welcome screen." });
+        }
+
+        [AllowAnonymous]
         [HttpPost("login")]
         public IActionResult Login(UserDto userDto)
         {

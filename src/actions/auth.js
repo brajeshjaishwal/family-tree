@@ -1,10 +1,10 @@
 import constants from '../constants/auth'
-import proxy from '../api/api'
+import { proxy, handleError } from '../api/api'
 
 const { REGISTER, REGISTER_FAILED, REGISTER_SUCCEDED, LOGIN, LOGIN_SUCCEDED, LOGIN_FAILED } = constants
 
 export const registerUserAction = function ({name, password}) {
-    const request = proxy.post('register', {name, password})
+    const request = proxy.post('users/register', {name, password})
     return async (dispatch) => {
         dispatch(registerStarted())
         try{
@@ -15,10 +15,11 @@ export const registerUserAction = function ({name, password}) {
             }else 
                 dispatch(registerSucceded())
         }catch(error) {
-            dispatch(registerFailed(error))
+            let errorMessage = handleError(error)
+            dispatch(registerFailed(errorMessage))
         }
     }
-    function registerStarted() { return { type: REGISTER } }
+    function registerStarted() { return { type: REGISTER , payload: { error: false, loading: true }} }
     function registerSucceded() { return { type: REGISTER_SUCCEDED, payload: { registered: true, loading: false } } }
     function registerFailed(error) { return { type: REGISTER_FAILED, payload: { error, loading: false} } }
 }
@@ -27,7 +28,7 @@ export const loginUserAction = ({name, password}) => {
     return async (dispatch) => {
         dispatch(loginStarted())
         try{
-            let resp = await proxy.post('login', {name, password})
+            let resp = await proxy.post('users/login', {name, password})
             let {user, token, message } = await resp.data
             if(user && user !== '' && user !== undefined)
                 sessionStorage.setItem('name', user)
@@ -38,10 +39,11 @@ export const loginUserAction = ({name, password}) => {
             }else 
                 dispatch(loginSucceded(user))
         }catch(error) {
-            dispatch(loginFailed(error))
+            let errorMessage = handleError(error)
+            dispatch(loginFailed(errorMessage))
         }
     }
-    function loginStarted() { return { type: LOGIN, payload: { loading: true } } }
+    function loginStarted() { return { type: LOGIN, payload: { error: false, loading: true } } }
     function loginSucceded(user) { return { type: LOGIN_SUCCEDED, payload: { user, loading: false } } }
     function loginFailed(error) { return { type: LOGIN_FAILED, payload: {loading: false, error} } }
 }

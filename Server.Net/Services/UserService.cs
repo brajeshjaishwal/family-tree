@@ -9,6 +9,7 @@ namespace Server.Net.Services
 {
     public interface IUserService
     {
+        string Welcome();
         User login(string username, string password);
         User register(User user, string password);
         User GetById(int id);
@@ -20,6 +21,9 @@ namespace Server.Net.Services
         public UserService(DataContext context)
         {
             _context = context;
+        }
+        public string Welcome() {
+            return "Welcome";
         }
         public User login(string name, string password)
         {

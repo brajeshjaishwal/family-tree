@@ -10,7 +10,7 @@ namespace Server.Net.Services
     public interface IFamilyService
     {
         Member AddMember(Member member);
-        IEnumerable<Member> GetMembers(int parentid);
+        IEnumerable<Member> GetMembers(int parentid, int currentuser);
         Member Update(Member member);
         void Delete(int id);
     }
@@ -23,9 +23,9 @@ namespace Server.Net.Services
         {
             _context = context;
         }
-        public IEnumerable<Member> GetMembers(int parentid)
+        public IEnumerable<Member> GetMembers(int parentid, int currentuser)
         {
-            return _context.Members.Where(m => m.parent == parentid).ToList();
+            return _context.Members.Where(m => m.parent == parentid && m.user == currentuser).ToList();
         }
         public Member AddMember(Member member)
         {
@@ -36,7 +36,7 @@ namespace Server.Net.Services
             if (string.IsNullOrWhiteSpace(member.relation))
                 throw new AppException("Member relation is missing");
 
-            if (_context.Members.Any(x => x.name == member.name))
+            if (_context.Members.Any(x => x.name == member.name && x.user == member.user))
                 throw new AppException("Member \"" + member.name + "\" already exist.");
 
             _context.Members.Add(member);

@@ -24,10 +24,11 @@ class MemberInfoDialog extends Component {
         this.setState({name: '',relation: ''})
     }
 
-    saveAndClose = () => {
+    saveAndClose = async () => {
         let { name, relation, parent } = this.state
-        this.props.addMember({name, relation, parent})
-        this.props.hideDialog()
+        await this.props.addMember({name, relation, parent})
+        if(this.props.success)
+            this.props.hideDialog()
         this.setState({name: '', relation: ''})
     }
 
@@ -54,10 +55,12 @@ class MemberInfoDialog extends Component {
                             onChange={this.handleChange}
                         />
                     </Form>
-                {this.props.error && <div>{this.props.message}</div>}
+                {this.props.error && <span style={{color:'red'}}>{this.props.error}</span>}
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button type="submit" primary onClick={this.saveAndClose} loading={this.props.loading}>Save And Close</Button>
+                    <Button type="submit" primary 
+                        onClick={this.saveAndClose} 
+                        loading={this.props.loading === this.props.member.key}>Save And Close</Button>
                     <Button onClick={this.close} secondary>Close</Button>
                 </Modal.Actions>
             </Modal>
@@ -69,8 +72,7 @@ function mapStateToProps(state) {
     console.log('memberInfoDialog, mapStateToProps', state)
     return {
         loading: state.family.loading,
-        error: state.family.error !== "",
-        message: state.family.error,
+        error: state.family.error,
         success: state.family.success,
     }
 }

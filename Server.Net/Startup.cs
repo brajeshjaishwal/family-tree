@@ -34,28 +34,24 @@ namespace Server.Net
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            services.AddDbContext<DataContext>(x => x.UseInMemoryDatabase("TestDb"));
-            services.AddMvc();
-            services.AddAutoMapper();
- 
+            //services.AddDbContext<DataContext>(x => x.UseInMemoryDatabase("TestDb"));
             // configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
- 
-            // configure jwt authentication
             var appSettings = appSettingsSection.Get<AppSettings>();
+
+            services.AddDbContext<DataContext>(x => x.UseSqlite(appSettings.ConnectionString));
+            services.AddMvc();
+            services.AddAutoMapper();
+
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
-            services.AddAuthentication(x =>
-            {
+            services.AddAuthentication(x => {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer(x =>
-            {
-                x.Events = new JwtBearerEvents
-                {
-                    OnTokenValidated = context =>
-                    {
+            .AddJwtBearer(x => {
+                x.Events = new JwtBearerEvents {
+                    OnTokenValidated = context => {
                         var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
                         var userId = int.Parse(context.Principal.Identity.Name);
                         Console.WriteLine(userId);
@@ -70,8 +66,7 @@ namespace Server.Net
                 };
                 x.RequireHttpsMetadata = false;
                 x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
+                x.TokenValidationParameters = new TokenValidationParameters {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,

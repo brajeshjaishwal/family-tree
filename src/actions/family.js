@@ -1,12 +1,15 @@
 import constants from '../constants/family'
-import proxy from '../api/api'
+import { proxy, handleError } from '../api/api'
 
 const { AddMember, AddMember_Success, AddMember_Failure, 
         FetchFamily, FetchFamily_Success, FetchFamily_Failure } = constants
 
 export const addFamilyMemberAction = function ({name, relation, parent}) {
-    var config = { headers: {'auth': sessionStorage.getItem('token')} }
-    const request = proxy.post('AddMember', {name, relation, parent}, config)
+    var config = { headers: {
+        'auth': sessionStorage.getItem('token'),
+        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+    }}
+    const request = proxy.post('family/addmember', {name, relation, parent}, config)
     return async (dispatch) => {
         dispatch(addFamilyMemberStarted())
         try{
@@ -18,7 +21,8 @@ export const addFamilyMemberAction = function ({name, relation, parent}) {
                 dispatch(addFamilyMemberSucceded(member))
             }
         }catch(error) {
-            dispatch(addFamilyMemberFailed(error))
+            let errorMessage = handleError(error)
+            dispatch(addFamilyMemberFailed(errorMessage))
         }
     }
     function addFamilyMemberStarted() { return { type: AddMember, payload: {error: '', success: false, loading: true} } }
@@ -27,8 +31,11 @@ export const addFamilyMemberAction = function ({name, relation, parent}) {
 }
 
 export const fetchFamilyMembersAction = function (parent) {
-    var config = { headers: {'auth': sessionStorage.getItem('token')} }
-    const request = proxy.get(`GetMembers/${parent}`, config)
+    var config = { headers: {
+        'auth': sessionStorage.getItem('token'),
+        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+    }}
+    const request = proxy.get(`family/getmembers/${parent}`, config)
     return async (dispatch) => {
         dispatch(fetchFamilyMembersStarted(parent))
         try{
@@ -39,15 +46,16 @@ export const fetchFamilyMembersAction = function (parent) {
             } else {
                 var members = []
                 result.members.forEach(m => {
-                    members.push({ key: m._id, parent: m.parent, name: m.name, relation: m.relation })
+                    members.push({ key: m._id || m.id, parent: m.parent || -1, name: m.name, relation: m.relation })
                 })
                 dispatch(fetchFamilyMembersSucceded(members))
             }
         }catch(error) {
-            dispatch(fetchFamilyMembersFailed(error))
+            let errorMessage = handleError(error)
+            dispatch(fetchFamilyMembersFailed(errorMessage))
         }
     }
-    function fetchFamilyMembersStarted(key) { return { type: FetchFamily, payload: { key, loading: true, error: '' } } }
-    function fetchFamilyMembersSucceded(members) { return { type: FetchFamily_Success, payload: { members, loading: false } } }
-    function fetchFamilyMembersFailed(error) { return { type: FetchFamily_Failure, payload: { error, loading: false}}}
+    function fetchFamilyMembersStarted(key) { return { type: FetchFamily, payload: { key, loading: key, error: '' } } }
+    function fetchFamilyMembersSucceded(members) { return { type: FetchFamily_Success, payload: { members, loading: '' } } }
+    function fetchFamilyMembersFailed(error) { return { type: FetchFamily_Failure, payload: { error, loading: ''}}}
 }

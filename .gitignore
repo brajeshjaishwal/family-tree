@@ -17,6 +17,12 @@ bin
 # .net obj
 obj
 
+# .net .vscode
+.vscode
+
+# .net .vs
+.vs
+
 # misc
 .DS_Store
 .env.local
