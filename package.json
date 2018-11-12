@@ -1,46 +1,47 @@
 {
-  "name": "family-tree",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "axios": "^0.18.0",
-    "bcrypt": "^3.0.2",
-    "body-parser": "^1.18.3",
-    "cors": "^2.8.4",
-    "express": "^4.16.4",
-    "jsonwebtoken": "^8.3.0",
-    "mongoose": "^5.3.8",
-    "react": "^16.6.0",
-    "react-dom": "^16.6.0",
-    "react-redux": "^5.1.0",
-    "react-router": "^4.3.1",
-    "react-router-dom": "^4.3.1",
-    "react-scripts": "2.1.0",
-    "react-tooltip": "^3.9.0",
-    "redux": "^4.0.1",
-    "redux-thunk": "^2.3.0",
-    "semantic-ui-css": "^2.4.1",
-    "semantic-ui-react": "^0.83.0"
-  },
-  "devDependencies": {
-    "morgan": "^1.9.1",
-    "nodemon": "^1.18.5"
-  },
-  "scripts": {
-    "client": "node src/index.js",
-    "server": "node server/server.js",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
-}
+    "name": "family-tree",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+      "axios": "^0.18.0",
+      "bcrypt": "^3.0.2",
+      "body-parser": "^1.18.3",
+      "cors": "^2.8.4",
+      "express": "^4.16.4",
+      "jsonwebtoken": "^8.3.0",
+      "mongoose": "^5.3.8",
+      "react": "^16.6.0",
+      "react-dom": "^16.6.0",
+      "react-redux": "^5.1.0",
+      "react-router": "^4.3.1",
+      "react-router-dom": "^4.3.1",
+      "react-scripts": "2.1.0",
+      "react-tooltip": "^3.9.0",
+      "redux": "^4.0.1",
+      "redux-thunk": "^2.3.0",
+      "semantic-ui-css": "^2.4.1",
+      "semantic-ui-react": "^0.83.0"
+    },
+    "devDependencies": {
+      "morgan": "^1.9.1",
+      "nodemon": "^1.18.5"
+    },
+    "scripts": {
+      "client": "node client/index.js",
+      "server": "node server/server.js",
+      "start": "react-scripts start",
+      "build": "react-scripts build",
+      "test": "react-scripts test",
+      "eject": "react-scripts eject"
+    },
+    "eslintConfig": {
+      "extends": "react-app"
+    },
+    "browserslist": [
+      ">0.2%",
+      "not dead",
+      "not ie <= 11",
+      "not op_mini all"
+    ]
+  }
+  
