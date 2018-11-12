@@ -34,7 +34,8 @@ Run server (dotnet)
 1) open a terminal or command prompt
 2) cd Server.Net
 3) dotnet restore
-4) dotnet run
+4) dotnet build
+5) dotnet run
 
 Run client
 1) in a terminal or command prompt run "yarn start" command
